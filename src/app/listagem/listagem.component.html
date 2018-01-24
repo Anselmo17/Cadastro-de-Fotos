@@ -1,0 +1,18 @@
+<header class="jumbotron">
+    <h1 class="text-center">{{titulo}}</h1>
+</header>
+
+<main class="container">
+    <div class="row mb-4">
+        <div class="col-sm-12">
+            <a [routerLink]="['cadastro']" class="btn btn-primary">Nova Foto</a>
+        </div>
+    </div>
+
+   <div class="row">    
+       <painel *ngFor="let foto of listaFotos" titulo="{{foto.titulo}}" class="col-sm-2">
+             <foto  titulo = "{{foto.titulo}}" url="{{foto.url}}"  ></foto>
+             <button (click)="remover(foto)" class="btn btn-danger">Remover</button>
+       </painel>
+   </div>    
+</main>
