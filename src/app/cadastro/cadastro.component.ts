@@ -3,6 +3,7 @@ import { FotoComponent } from '../foto/foto.component';
 import{HttpClient,  HttpHeaders} from '@angular/common/http';
 import { FotoService } from '../servicos/fotos.services';
 import{ActivatedRoute} from "@angular/router";
+import { JSONP_ERR_WRONG_RESPONSE_TYPE } from '@angular/common/http/src/jsonp';
 
 
 @Component({
@@ -25,8 +26,20 @@ export class CadastroComponent implements OnInit {
   constructor(private servico: FotoService, private rota:ActivatedRoute){
       rota.params.subscribe(
         parametros => {
-          this.foto._id = parametros.fotoId
+
+         if(parametros.fotoId) {
+            this.carregarFoto(parametros.fotoId)
+         } 
         }
+      )
+
+
+    }
+
+    carregarFoto(idFoto){
+      this.servico.consultar(idFoto).subscribe(
+        fotoApi => this.foto = fotoApi
+        ,erro => console.log("erro carregando fotoApi")
       )
     }
 
@@ -34,14 +47,21 @@ export class CadastroComponent implements OnInit {
   ngOnInit() {}
 
 
-  /*função para pegar eventos no formulario cadastro*/
+  /*função para salvar os eventos do formulario cadastro*/
   salvar(){
 
-    this.servico
-    .cadastrar(this.foto).subscribe(
-      () => {
-        this.foto = new FotoComponent()
-      },erro => console.log(erro)
-    )     
+    if(this.foto._id){
+      this.servico.alterar(this.foto).subscribe(
+        resposta => console.log(resposta)
+        ,erro => console.log(erro)
+      )
+
+    }
+     else{
+      this.servico.cadastrar(this.foto).subscribe(
+        ()=> this.foto = new FotoComponent()
+        ,erro => console.log(erro)
+      )
+    }   
   }
 }

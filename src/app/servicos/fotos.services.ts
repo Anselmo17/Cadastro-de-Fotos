@@ -25,12 +25,23 @@ export class FotoService{
     }
 
 
-    deletar(foto:FotoComponent){
+    //apagar os dados 
+    deletar(foto:FotoComponent):Observable<Object>{
         return this.conexaoApi.delete(this.url+foto._id);
     }
 
+    //consultar os dados 
+    consultar(fotoId: string):Observable<FotoComponent>{
+        return this.conexaoApi.get<FotoComponent>(
+            this.url+fotoId       
+        )
+    }
 
-    consultar(){}
-    alterar(){}
+        //alterar os dados 
+    alterar(foto:FotoComponent):Observable<object>{
+        return this.conexaoApi.put(
+            this.url+foto._id ,JSON.stringify(foto),this.opcoesHttp
+        )
+    }
 
 }
