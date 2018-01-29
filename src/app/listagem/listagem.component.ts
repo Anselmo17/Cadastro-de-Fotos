@@ -30,7 +30,21 @@ listaFotos : FotoComponent[] = []
       
       
       this.servico.deletar(foto).subscribe(
-          ()=> console.log('apaga.. ${foto.titulo}')
+          ()=> {
+
+        this.listaFotos = this.listaFotos.filter(
+             fotoFilter => {
+                if(fotoFilter != foto){ return fotoFilter
+                }
+             }  
+           )
+                  
+          
+            console.log(`apaga.. ${foto.titulo}`)
+          },
+          erro=>{
+            console.log('Algo errado aconteceu...')
+          }
       )
     }
 }

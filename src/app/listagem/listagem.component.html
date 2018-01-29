@@ -11,7 +11,11 @@
 
    <div class="row">    
        <painel *ngFor="let foto of listaFotos" titulo="{{foto.titulo}}" class="col-sm-2">
-             <foto  titulo = "{{foto.titulo}}" url="{{foto.url}}"  ></foto>
+
+             <a [routerLink]="['/cadastro', foto._id]">
+                <foto  titulo = "{{foto.titulo}}" url="{{foto.url}}"  ></foto>
+             </a>   
+             
              <button (click)="remover(foto)" class="btn btn-danger">Remover</button>
        </painel>
    </div>    
