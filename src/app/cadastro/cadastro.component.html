@@ -4,6 +4,12 @@
 
     <main class="container">
 
+        <div *ngIf="mensagem" class="row">
+            <div class="col-sm-12">
+                <p class="alert alert-success">{{mensagem}}</p>
+            </div>
+        </div>
+
         <div class="row">
             <form  action="" class="col-sm-7" (submit)="salvar($event)" >
                 <div class="form-group">

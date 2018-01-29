@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FotoComponent } from '../foto/foto.component';
 import{HttpClient,  HttpHeaders} from '@angular/common/http';
 import { FotoService } from '../servicos/fotos.services';
-import{ActivatedRoute} from "@angular/router";
+import{ActivatedRoute , Router} from "@angular/router";
 import { JSONP_ERR_WRONG_RESPONSE_TYPE } from '@angular/common/http/src/jsonp';
 
 
@@ -21,9 +21,9 @@ export class CadastroComponent implements OnInit {
 //estanciado o fotoComponent
 
   private foto = new FotoComponent()
-   
+mensagem = ""   
 
-  constructor(private servico: FotoService, private rota:ActivatedRoute){
+  constructor(private servico: FotoService, private rota:ActivatedRoute, private roteador:Router){
       rota.params.subscribe(
         parametros => {
 
@@ -52,14 +52,22 @@ export class CadastroComponent implements OnInit {
 
     if(this.foto._id){
       this.servico.alterar(this.foto).subscribe(
-        resposta => console.log(resposta)
+       // () =>this.roteador.navigate([''])
+       mensagemServico=>{
+         this.mensagem = mensagemServico.texto
+       }
         ,erro => console.log(erro)
       )
 
     }
      else{
       this.servico.cadastrar(this.foto).subscribe(
-        ()=> this.foto = new FotoComponent()
+
+        mensagemServico => {
+          this.foto = new FotoComponent()
+          this.mensagem = mensagemServico.texto
+        }
+
         ,erro => console.log(erro)
       )
     }   
