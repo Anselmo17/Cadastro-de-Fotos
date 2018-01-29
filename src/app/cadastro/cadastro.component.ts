@@ -3,8 +3,8 @@ import { FotoComponent } from '../foto/foto.component';
 import{HttpClient,  HttpHeaders} from '@angular/common/http';
 import { FotoService } from '../servicos/fotos.services';
 import{ActivatedRoute , Router} from "@angular/router";
-import { JSONP_ERR_WRONG_RESPONSE_TYPE } from '@angular/common/http/src/jsonp';
-
+import{FormGroup,FormBuilder,Validators}from "@angular/forms"
+import { validateConfig } from '@angular/router/src/config';
 
 @Component({
   selector: 'app-cadastro',
@@ -21,9 +21,28 @@ export class CadastroComponent implements OnInit {
 //estanciado o fotoComponent
 
   private foto = new FotoComponent()
-mensagem = ""   
+  mensagem = ""   
+  formCadastro:FormGroup
 
-  constructor(private servico: FotoService, private rota:ActivatedRoute, private roteador:Router){
+  constructor(
+    private servico: FotoService,
+     private rota:ActivatedRoute,
+     private roteador:Router,
+     private formBuilder:FormBuilder){
+
+      this.formCadastro = formBuilder.group({
+       
+        titulo:['', Validators.compose(
+              [
+                Validators.required,
+                Validators.minLength(3)
+              ]
+            )],
+            
+        url:['',Validators.required],
+        descricao:''
+      })
+
       rota.params.subscribe(
         parametros => {
 
@@ -52,7 +71,7 @@ mensagem = ""
 
     if(this.foto._id){
       this.servico.alterar(this.foto).subscribe(
-       // () =>this.roteador.navigate([''])
+      
        mensagemServico=>{
          this.mensagem = mensagemServico.texto
        }
@@ -64,8 +83,10 @@ mensagem = ""
       this.servico.cadastrar(this.foto).subscribe(
 
         mensagemServico => {
-          this.foto = new FotoComponent()
           this.mensagem = mensagemServico.texto
+          this.foto = new FotoComponent()
+
+          
         }
 
         ,erro => console.log(erro)

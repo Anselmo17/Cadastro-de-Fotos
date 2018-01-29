@@ -5,12 +5,17 @@
 <main class="container">
     <div class="row mb-4">
         <div class="col-sm-12">
-            <a [routerLink]="['cadastro']" class="btn btn-primary">Nova Foto</a>
+            <form class="input-group">
+                <span class="input-group-prepend">
+                    <a [routerLink]="['cadastro']" class="btn btn-primary">Nova Foto</a>
+                </span>
+                <input (input)="0" #inputBusca type="text" class="form-control">
+            </form>
         </div>
     </div>
 
    <div class="row">    
-       <painel *ngFor="let foto of listaFotos" titulo="{{foto.titulo}}" class="col-sm-2">
+       <painel *ngFor="let foto of listaFotos | filtroPorTitulo:inputBusca.value" titulo="{{foto.titulo}}" class="col-sm-2">
 
              <a [routerLink]="['/cadastro', foto._id]">
                 <foto  titulo = "{{foto.titulo}}" url="{{foto.url}}"  ></foto>
